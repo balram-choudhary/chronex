@@ -26,57 +26,48 @@
     <p id="msg"></p>
 </div>
 
-<script>
-let mode = "login";
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword
+  } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
-function toggleMode() {
-    const mainBtn = document.getElementById("mainBtn");
-    const subtitle = document.getElementById("subtitle");
-    const switchText = document.getElementById("switchText");
-    const msg = document.getElementById("msg");
+  const firebaseConfig = {
+    apiKey: "AIzaSyA_Za7Bjbob5zFGZxN5Q2TikIHAoPdb0Uc",
+    authDomain: "chronex-2b57e.firebaseapp.com",
+    projectId: "chronex-2b57e",
+    appId: "1:588027762022:web:f6cfef49299c8116c5a4a7"
+  };
 
-    msg.innerText = "";
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-    if (mode === "login") {
-        mode = "signup";
-        mainBtn.innerText = "Sign Up";
-        subtitle.innerText = "Create your Chronex account";
-        switchText.innerText = "Already have an account?";
-        document.querySelector(".switch a").innerText = "Login";
-    } else {
-        mode = "login";
-        mainBtn.innerText = "Login";
-        subtitle.innerText = "Login to your account";
-        switchText.innerText = "Don't have an account?";
-        document.querySelector(".switch a").innerText = "Sign up";
-    }
-}
-
-function handleAction() {
+  window.handleAction = async function () {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
     const msg = document.getElementById("msg");
 
     if (!email || !password) {
-        msg.innerText = "Please fill all fields";
-        msg.style.color = "red";
-        return;
+      msg.innerText = "Please fill all fields";
+      msg.style.color = "red";
+      return;
     }
 
-    // TEMP AUTH (frontend-only)
-    localStorage.setItem("chronex_email", email);
-    localStorage.setItem("chronex_logged_in", "true");
+    try {
+      if (mode === "login") {
+        await signInWithEmailAndPassword(auth, email, password);
+      } else {
+        await createUserWithEmailAndPassword(auth, email, password);
+      }
 
-    msg.innerText = mode === "login"
-        ? "Login successful"
-        : "Account created successfully";
-
-    msg.style.color = "green";
-
-    setTimeout(() => {
-        window.location.href = "home.html";
-    }, 600);
-}
+      window.location.href = "home.html";
+    } catch (err) {
+      msg.innerText = err.message;
+      msg.style.color = "red";
+    }
+  };
 </script>
 
 
