@@ -1,0 +1,96 @@
+/* ================= SIDEBAR ================= */
+
+.sidebar {
+    width: 0;
+    overflow: hidden;
+    transition: width 0.3s ease;
+    border-right: 1px solid rgba(255, 255, 255, 0.04);
+    box-shadow:
+        inset -1px 0 0 rgba(255, 255, 255, 0.05),
+        8px 0 24px rgba(0, 0, 0, 0.7);
+}
+.sidebar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -1px;
+    width: 1px;
+    height: 100%;
+
+    background: linear-gradient(
+        180deg,
+        transparent,
+        rgba(59, 130, 246, 0.25),
+        transparent
+    );
+}
+
+
+.sidebar.open {
+    width: 240px;
+}
+
+.sidebar.open + .main {
+    padding-left: 32px;
+}
+
+/* Sidebar links */
+
+.sidebar-links {
+    list-style: none;
+    margin: 0;
+    padding: 12px 0;
+}
+
+.sidebar-links a {
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+    display: block;
+}
+
+
+.sidebar-links li {
+    margin: 4px 12px;
+    padding: 12px 16px;
+
+    font-size: 13.5px;
+    letter-spacing: 0.3px;
+    color: #9ca3af;
+
+    cursor: pointer;
+    border-radius: 10px;
+    background: transparent;
+
+    display: flex;
+    align-items: center;
+
+    transition:
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+/* Hover */
+.sidebar-links li:hover {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.08),
+        rgba(255, 255, 255, 0.02)
+    );
+}
+
+/* Active */
+.sidebar-links li.active {
+    background: linear-gradient(
+        135deg,
+        rgba(90, 200, 255, 0.14),
+        rgba(90, 200, 255, 0.06)
+    );
+
+    color: #ffffff;
+    font-weight: 600;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(90, 200, 255, 0.25),
+        0 6px 18px rgba(0, 0, 0, 0.6);
+}

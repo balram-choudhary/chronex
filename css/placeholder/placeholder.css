@@ -1,0 +1,31 @@
+/* ================= COMING SOON ================= */
+
+.coming-soon {
+    height: calc(100vh - 48px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    color: #9ca3af;
+}
+
+.coming-soon h1 {
+    margin: 0 0 10px;
+    font-size: 28px;
+    font-weight: 600;
+    color: #f9fafb;
+}
+
+.coming-soon p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.coming-soon span {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #6ee7b7;
+}
+

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chronex | Authentication</title>
+    <link rel="stylesheet" href="css/index/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Chronex</h1>
+    <p class="tagline" id="subtitle">Login to your account</p>
+
+    <input type="email" id="email" placeholder="Email ID">
+    <input type="password" id="password" placeholder="Password">
+
+    <!-- Main Button -->
+    <button id="mainBtn" onclick="handleAction()">Login</button>
+
+    <!-- Small corner option -->
+    <p class="switch">
+        <span id="switchText">Don't have an account?</span>
+        <a href="#" onclick="toggleMode()">Sign up</a>
+    </p>
+
+    <p id="msg"></p>
+</div>
+
+<script>
+let mode = "login";
+
+function toggleMode() {
+    const mainBtn = document.getElementById("mainBtn");
+    const subtitle = document.getElementById("subtitle");
+    const switchText = document.getElementById("switchText");
+    const msg = document.getElementById("msg");
+
+    msg.innerText = "";
+
+    if (mode === "login") {
+        mode = "signup";
+        mainBtn.innerText = "Sign Up";
+        subtitle.innerText = "Create your Chronex account";
+        switchText.innerText = "Already have an account?";
+        document.querySelector(".switch a").innerText = "Login";
+    } else {
+        mode = "login";
+        mainBtn.innerText = "Login";
+        subtitle.innerText = "Login to your account";
+        switchText.innerText = "Don't have an account?";
+        document.querySelector(".switch a").innerText = "Sign up";
+    }
+}
+
+function handleAction() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const msg = document.getElementById("msg");
+
+    if (!email || !password) {
+        msg.innerText = "Please fill all fields";
+        msg.style.color = "red";
+        return;
+    }
+
+    // TEMP AUTH (frontend-only)
+    localStorage.setItem("chronex_email", email);
+    localStorage.setItem("chronex_logged_in", "true");
+
+    msg.innerText = mode === "login"
+        ? "Login successful"
+        : "Account created successfully";
+
+    msg.style.color = "green";
+
+    setTimeout(() => {
+        window.location.href = "home.html";
+    }, 600);
+}
+</script>
+
+
+</body>
+</html>

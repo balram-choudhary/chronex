@@ -1,0 +1,111 @@
+body {
+    font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: radial-gradient(circle at top, #0a0a0a, #000000);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #e5e7eb;
+}
+
+/* Main card */
+.container {
+    background: rgba(10, 10, 10, 0.92);
+    padding: 36px;
+    width: 360px;
+    border-radius: 18px;
+    box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.9),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    text-align: center;
+}
+
+/* Heading */
+h1 {
+    margin-bottom: 6px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #f9fafb;
+}
+
+/* Subtitle */
+.tagline {
+    font-size: 13px;
+    color: #9ca3af;
+    margin-bottom: 26px;
+}
+
+/* Inputs */
+input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: 1px solid #1f2933;
+    background: #020202;
+    color: #e5e7eb;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.25s ease;
+}
+
+input::placeholder {
+    color: #6b7280;
+}
+
+input:focus {
+    border-color: #3f3f46;
+    background: #050505;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.06);
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 18px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #1a1a1a, #000000);
+    color: #f9fafb;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.4px;
+    transition: all 0.25s ease;
+}
+
+button:hover {
+    background: linear-gradient(180deg, #2a2a2a, #000000);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+/* Small corner text */
+.switch {
+    margin-top: 16px;
+    font-size: 12.5px;
+    color: #9ca3af;
+}
+
+.switch a {
+    color: #d1d5db;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 4px;
+}
+
+.switch a:hover {
+    text-decoration: underline;
+}
+
+/* Status / message */
+#msg {
+    margin-top: 16px;
+    font-size: 13px;
+    color: #a1a1aa;
+}

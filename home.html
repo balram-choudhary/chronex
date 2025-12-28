@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chronex | Dashboard</title>
+
+    <!-- Dashboard CSS -->
+    <link rel="stylesheet" href="css/home/layout.css">
+    <link rel="stylesheet" href="css/home/sidebar.css">
+    <link rel="stylesheet" href="css/dashboard/cards.css">
+    <link rel="stylesheet" href="css/placeholder/placeholder.css">
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="top-header">
+    <div class="left-section">
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <img src="logo.png" alt="Chronex Logo" class="logo">
+    </div>
+
+    <div class="search-container">
+        <svg class="search-icon" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="16.5" y1="16.5" x2="22" y2="22"></line>
+        </svg>
+        <input class="search-bar" placeholder="Search tasks or meetings...">
+    </div>
+
+    <div class="header-right">
+        <div id="userAvatar" class="user-avatar" onclick="toggleUserMenu()">
+            U
+        </div>
+
+        <div id="userMenu" class="user-menu">
+            <div class="user-menu-item">Profile</div>
+            <div class="user-menu-item">Settings</div>
+            <div class="user-menu-item logout" onclick="logout()">Log Out</div>
+        </div>
+    </div>
+
+</header>
+
+<!-- ================= CONTENT ================= -->
+<div class="content-wrapper">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="sidebar open">
+        <ul class="sidebar-links">
+            <li class="active" data-page="dashboard">Dashboard</li>
+            <li data-page="tasks">My Tasks</li>
+            <li data-page="meetings">Meetings</li>
+            <li data-page="analytics">Time Analytics</li>
+            <li data-page="organization">Organization</li>
+            <li data-page="reports">Reports</li>
+        </ul>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+        <div id="page-content"></div>
+    </main>
+
+</div>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+
+if (!localStorage.getItem("chronex_logged_in")) {
+    window.location.href = "index.html";
+}
+
+
+function getRandomColor() {
+    const colors = [
+        "linear-gradient(135deg, #22d3ee, #3b82f6)", // cyan → blue (primary)
+        "linear-gradient(135deg, #6366f1, #3b82f6)", // indigo → blue
+        "linear-gradient(135deg, #a855f7, #6366f1)", // purple → indigo
+        "linear-gradient(135deg, #06b6d4, #22d3ee)", // teal → cyan
+        "linear-gradient(135deg, #0ea5e9, #2563eb)"  // sky → deep blue
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+
+
+// Simulated logged-in email (replace later with real one)
+const userEmail = localStorage.getItem("chronex_email") || "user@example.com";
+
+const avatar = document.getElementById("userAvatar");
+avatar.textContent = userEmail.charAt(0).toUpperCase();
+
+// Set random color once
+avatar.style.background = localStorage.getItem("avatarColor") || getRandomColor();
+localStorage.setItem("avatarColor", avatar.style.background);
+
+function toggleUserMenu() {
+    const menu = document.getElementById("userMenu");
+    menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+}
+
+document.addEventListener("click", (e) => {
+    const avatar = document.getElementById("userAvatar");
+    const menu = document.getElementById("userMenu");
+
+    if (!avatar.contains(e.target) && !menu.contains(e.target)) {
+        menu.style.display = "none";
+    }
+});
+
+function logout() {
+    localStorage.removeItem("chronex_logged_in");
+    localStorage.removeItem("chronex_email");
+    window.location.href = "index.html";
+}
+
+
+
+function toggleMenu() {
+    document.getElementById("sidebar").classList.toggle("open");
+}
+
+const sidebarItems = document.querySelectorAll(".sidebar-links li");
+const pageContent = document.getElementById("page-content");
+
+sidebarItems.forEach(item => {
+    item.addEventListener("click", () => {
+        // Active state
+        sidebarItems.forEach(li => li.classList.remove("active"));
+        item.classList.add("active");
+
+        const page = item.dataset.page;
+
+        loadPage(page);
+    });
+});
+
+function loadPage(page) {
+    fetch(`partials/${page}.html`)
+        .then(res => res.text())
+        .then(html => {
+            pageContent.innerHTML = html;
+        })
+        .catch(() => {
+            pageContent.innerHTML = "<p>Error loading page</p>";
+        });
+}
+
+// Load default page
+loadPage("dashboard");
+</script>
+
+</body>
+</html>
