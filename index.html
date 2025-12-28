@@ -43,6 +43,15 @@
     signInWithPopup
   } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
+  import {
+    getFirestore,
+    doc,
+    setDoc,
+    getDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+  // 🔧 Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyA_Za7Bjbob5zFGZxN5Q2TikIHAoPdb0Uc",
     authDomain: "chronex-2b57e.firebaseapp.com",
@@ -50,12 +59,15 @@
     appId: "1:588027762022:web:f6cfef49299c8116c5a4a7"
   };
 
+  // 🔥 Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
   const provider = new GoogleAuthProvider();
 
   let mode = "login";
 
+  // 🔁 Toggle login / signup
   window.toggleMode = function () {
     const mainBtn = document.getElementById("mainBtn");
     const subtitle = document.getElementById("subtitle");
@@ -79,7 +91,23 @@
     }
   };
 
-  // Email / Password Auth
+  // 🧠 Ensure Firestore user profile exists
+  async function ensureUserProfile(user) {
+    const userRef = doc(db, "users", user.uid);
+    const snap = await getDoc(userRef);
+
+    if (!snap.exists()) {
+      await setDoc(userRef, {
+        uid: user.uid,
+        email: user.email,
+        name: user.displayName || "",
+        photoURL: user.photoURL || "",
+        createdAt: serverTimestamp()
+      });
+    }
+  }
+
+  // 📧 Email / Password Auth
   window.handleAction = async function () {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -92,12 +120,12 @@
     }
 
     try {
-      if (mode === "login") {
-        await signInWithEmailAndPassword(auth, email, password);
-      } else {
-        await createUserWithEmailAndPassword(auth, email, password);
-      }
+      const result =
+        mode === "login"
+          ? await signInWithEmailAndPassword(auth, email, password)
+          : await createUserWithEmailAndPassword(auth, email, password);
 
+      await ensureUserProfile(result.user);
       window.location.href = "home.html";
 
     } catch (err) {
@@ -106,12 +134,13 @@
     }
   };
 
-  // Google Login
+  // 🔐 Google Login
   window.googleLogin = async function () {
     const msg = document.getElementById("msg");
 
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      await ensureUserProfile(result.user);
       window.location.href = "home.html";
 
     } catch (error) {
