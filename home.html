@@ -28,9 +28,7 @@
     </div>
 
     <div class="header-right">
-        <div id="userAvatar" class="user-avatar" onclick="toggleUserMenu()">
-            U
-        </div>
+        <div id="userAvatar" class="user-avatar" onclick="toggleUserMenu()">U</div>
 
         <div id="userMenu" class="user-menu">
             <div class="user-menu-item">Profile</div>
@@ -38,7 +36,6 @@
             <div class="user-menu-item logout" onclick="logout()">Log Out</div>
         </div>
     </div>
-
 </header>
 
 <!-- ================= CONTENT ================= -->
@@ -54,9 +51,7 @@
             <li data-page="organization">Organization</li>
             <li data-page="reports">Reports</li>
         </ul>
-
     </aside>
-
 
     <!-- MAIN -->
     <main class="main">
@@ -65,22 +60,18 @@
 
 </div>
 
-<!-- ================= SCRIPT ================= -->
+<!-- ================= UI SCRIPT ================= -->
 <script>
-/* ================= AVATAR UTILS ================= */
-
 function getRandomColor() {
     const colors = [
-        "linear-gradient(135deg, #22d3ee, #3b82f6)", // cyan → blue
-        "linear-gradient(135deg, #6366f1, #3b82f6)", // indigo → blue
-        "linear-gradient(135deg, #a855f7, #6366f1)", // purple → indigo
-        "linear-gradient(135deg, #06b6d4, #22d3ee)", // teal → cyan
-        "linear-gradient(135deg, #0ea5e9, #2563eb)"  // sky → deep blue
+        "linear-gradient(135deg, #22d3ee, #3b82f6)",
+        "linear-gradient(135deg, #6366f1, #3b82f6)",
+        "linear-gradient(135deg, #a855f7, #6366f1)",
+        "linear-gradient(135deg, #06b6d4, #22d3ee)",
+        "linear-gradient(135deg, #0ea5e9, #2563eb)"
     ];
     return colors[Math.floor(Math.random() * colors.length)];
 }
-
-/* ================= UI HELPERS ================= */
 
 function toggleUserMenu() {
     const menu = document.getElementById("userMenu");
@@ -90,7 +81,6 @@ function toggleUserMenu() {
 document.addEventListener("click", (e) => {
     const avatar = document.getElementById("userAvatar");
     const menu = document.getElementById("userMenu");
-
     if (!avatar.contains(e.target) && !menu.contains(e.target)) {
         menu.style.display = "none";
     }
@@ -100,8 +90,6 @@ function toggleMenu() {
     document.getElementById("sidebar").classList.toggle("open");
 }
 
-/* ================= SIDEBAR NAV ================= */
-
 const sidebarItems = document.querySelectorAll(".sidebar-links li");
 const pageContent = document.getElementById("page-content");
 
@@ -109,72 +97,64 @@ sidebarItems.forEach(item => {
     item.addEventListener("click", () => {
         sidebarItems.forEach(li => li.classList.remove("active"));
         item.classList.add("active");
-
-        const page = item.dataset.page;
-        loadPage(page);
+        loadPage(item.dataset.page);
     });
 });
 
 function loadPage(page) {
     fetch(`partials/${page}.html`)
         .then(res => res.text())
-        .then(html => {
-            pageContent.innerHTML = html;
-        })
-        .catch(() => {
-            pageContent.innerHTML = "<p>Error loading page</p>";
-        });
+        .then(html => pageContent.innerHTML = html)
+        .catch(() => pageContent.innerHTML = "<p>Error loading page</p>");
 }
 
-// Default page
 loadPage("dashboard");
 </script>
 
+<!-- ================= FIREBASE AUTH ================= -->
 <script type="module">
-/* ================= FIREBASE AUTH ================= */
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import {
-    getAuth,
-    onAuthStateChanged,
-    signOut
+  getAuth,
+  onAuthStateChanged,
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyA_Za7Bjbob5zFGZxN5Q2TikIHAoPdb0Uc",
-    authDomain: "chronex-2b57e.firebaseapp.com",
-    projectId: "chronex-2b57e",
-    appId: "1:588027762022:web:f6cfef49299c8116c5a4a7"
+  apiKey: "AIzaSyA_Za7Bjbob5zFGZxN5Q2TikIHAoPdb0Uc",
+  authDomain: "chronex-2b57e.firebaseapp.com",
+  projectId: "chronex-2b57e",
+  appId: "1:588027762022:web:f6cfef49299c8116c5a4a7"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// 🔐 Protect page
 onAuthStateChanged(auth, (user) => {
-    if (!user) {
-        window.location.href = "index.html";
-        return;
-    }
+  if (!user) {
+    window.location.href = "index.html";
+    return;
+  }
 
-    // 🔤 Avatar letter from Firebase email
-    const avatar = document.getElementById("userAvatar");
-    avatar.textContent = user.email.charAt(0).toUpperCase();
+  // Avatar letter
+  const avatar = document.getElementById("userAvatar");
+  avatar.textContent = user.email.charAt(0).toUpperCase();
 
-    // 🎨 Stable random color per user
-    const colorKey = `avatarColor_${user.uid}`;
-    const savedColor = localStorage.getItem(colorKey) || getRandomColor();
-    avatar.style.background = savedColor;
-    localStorage.setItem(colorKey, savedColor);
+  // Stable color per user
+  const colorKey = `avatarColor_${user.uid}`;
+  const savedColor = localStorage.getItem(colorKey) || getRandomColor();
+  avatar.style.background = savedColor;
+  localStorage.setItem(colorKey, savedColor);
 });
 
 // 🔓 Logout
 window.logout = function () {
-    signOut(auth).then(() => {
-        window.location.href = "index.html";
-    });
+  signOut(auth).then(() => {
+    window.location.href = "index.html";
+  });
 };
 </script>
-
 
 </body>
 </html>

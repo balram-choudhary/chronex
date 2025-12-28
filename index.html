@@ -14,10 +14,17 @@
     <input type="email" id="email" placeholder="Email ID">
     <input type="password" id="password" placeholder="Password">
 
-    <!-- Main Button -->
     <button id="mainBtn" onclick="handleAction()">Login</button>
 
-    <!-- Small corner option -->
+    <div class="divider">
+        <span>Or continue with</span>
+    </div>
+
+    <button class="google-btn" onclick="googleLogin()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+        <span>Google</span>
+    </button>
+
     <p class="switch">
         <span id="switchText">Don't have an account?</span>
         <a href="#" onclick="toggleMode()">Sign up</a>
@@ -31,7 +38,9 @@
   import {
     getAuth,
     signInWithEmailAndPassword,
-    createUserWithEmailAndPassword
+    createUserWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup
   } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
   const firebaseConfig = {
@@ -43,11 +52,10 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
 
-  // 🔑 FIX: mode must exist in module scope
   let mode = "login";
 
-  // 🔑 FIX: expose function to HTML
   window.toggleMode = function () {
     const mainBtn = document.getElementById("mainBtn");
     const subtitle = document.getElementById("subtitle");
@@ -71,7 +79,7 @@
     }
   };
 
-  // 🔑 FIX: expose function to HTML
+  // Email / Password Auth
   window.handleAction = async function () {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -90,16 +98,24 @@
         await createUserWithEmailAndPassword(auth, email, password);
       }
 
-      msg.style.color = "green";
-      msg.innerText =
-        mode === "login" ? "Login successful" : "Account created successfully";
-
-      setTimeout(() => {
-        window.location.href = "home.html";
-      }, 600);
+      window.location.href = "home.html";
 
     } catch (err) {
       msg.innerText = err.message;
+      msg.style.color = "red";
+    }
+  };
+
+  // Google Login
+  window.googleLogin = async function () {
+    const msg = document.getElementById("msg");
+
+    try {
+      await signInWithPopup(auth, provider);
+      window.location.href = "home.html";
+
+    } catch (error) {
+      msg.innerText = error.message;
       msg.style.color = "red";
     }
   };
