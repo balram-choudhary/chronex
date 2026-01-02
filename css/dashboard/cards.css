@@ -61,12 +61,13 @@ html, body {
     margin-bottom: 28px;
 }
 
+/* Replace the fixed repeat(3, 1fr) with auto-fit for responsiveness */
 .top-row {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .bottom-row {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 }
 
 /* ================= KPI CARDS ================= */
@@ -112,7 +113,7 @@ html, body {
     font-size: 11px; 
     font-weight: 600;
     letter-spacing: 0.8px; /* Increased for premium look */
-    text-transform: uppercase; 
+    text-transform:none; 
     
     /* This color is already perfect in your code */
     color: #9ca3af; 

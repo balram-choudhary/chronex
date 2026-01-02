@@ -86,7 +86,8 @@ body {
 
     background: #050505;
     border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Subtle baseline border */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .search-icon {
@@ -109,6 +110,31 @@ body {
 
 .search-bar::placeholder {
     color: #6b7280;
+}
+
+.search-container:focus-within {
+    /* Solid White Border with low opacity */
+    border-color: rgba(255, 255, 255, 0.4);
+    
+    /* Slight background lift */
+    background: rgba(255, 255, 255, 0.04);
+    
+    /* Premium White Glow */
+    box-shadow: 
+        0 0 0 4px rgba(255, 255, 255, 0.03), /* Inner soft ring */
+        0 10px 25px -5px rgba(0, 0, 0, 0.5); /* Deep shadow for depth */
+    
+    outline: none;
+}
+
+/* Ensure the search icon and text also respond to the white theme */
+.search-container:focus-within .search-icon {
+    stroke: rgba(255, 255, 255, 0.9);
+}
+
+.search-bar:focus {
+    color: #ffffff;
+    outline: none;
 }
 
 /* ================= USER AVATAR ================= */
