@@ -1,4 +1,59 @@
-/* ================= KPI GRID ================= */
+/* ============================================================
+   GLOBAL SCROLLBAR HIDE (STILL SCROLLABLE)
+   ============================================================ */
+
+/* Firefox */
+* {
+    scrollbar-width: none;
+    -ms-overflow-style: none; /* IE / Edge */
+}
+
+/* Chrome, Safari, Edge */
+*::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+/* ================= GLOBAL ADJUSTMENTS ================= */
+
+html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden; /* This prevents the entire page from moving */
+    font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #000000;
+    color: #e5e7eb;
+}
+
+/* ================= MAIN LAYOUT ================= */
+
+.content-wrapper {
+    display: flex;
+    margin-top: 56px; /* Matches header height */
+    height: calc(100vh - 56px); /* Fills remaining screen height */
+    overflow: hidden;
+}
+
+.main {
+    flex: 1;
+    overflow-y: auto; /* Only this section (the red area) scrolls */
+    padding: 24px;
+    /* The scrollbar is hidden by the global rule at the top */
+}
+
+/* Ensure sidebar stays fixed in height within the wrapper */
+.sidebar {
+    height: 100%;
+    width: 0;
+    overflow: hidden;
+    transition: width 0.3s ease;
+    border-right: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* ============================================================
+   KPI GRID LAYOUT
+   ============================================================ */
 
 .kpi-row {
     display: grid;
@@ -18,43 +73,76 @@
 
 .kpi-card {
     position: relative;
-    height: 140px;
+    /* Increased height for a more premium, spacious SaaS look */
+    height: 180px; 
 
     background: linear-gradient(180deg, #050505, #000000);
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.06);
 
-    padding: 14px 18px 18px;
+    /* Slightly increased padding to match the new height */
+    padding: 20px 24px; 
 
     display: flex;
+    flex-direction: column; /* Stack heading on top of content */
     align-items: flex-start;
     justify-content: flex-start;
 
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-    transition: border-color 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .kpi-card:hover {
     border-color: rgba(255, 255, 255, 0.12);
+    /* Subtle lift effect often seen in premium SaaS UI */
+    transform: translateY(-2px); 
 }
 
 .kpi-card.large {
-    height: 220px;
+    /* Increased height for large cards to maintain hierarchy */
+    height: 280px; 
 }
 
 .kpi-heading {
     width: 100%;
-    margin-top: 2px;
-
-    text-align: center;
-    font-size: 14px;
+    margin-top: 0; 
+    text-align: left; 
+    
+    /* Change weight to 600 for uppercase readability */
+    font-size: 11px; 
     font-weight: 600;
-    letter-spacing: 0.3px;
-    color: #e5e7eb;
+    letter-spacing: 0.8px; /* Increased for premium look */
+    text-transform: uppercase; 
+    
+    /* This color is already perfect in your code */
+    color: #9ca3af; 
+    opacity: 0.8; /* Adds a sophisticated blended look */
+
+    position: relative;
+    padding-bottom: 12px; /* Space between text and the line */
+    margin-bottom: 16px;  /* Space between the line and content below */
+}
+
+/* The Separator Line */
+.kpi-heading::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    
+    /* Subtle gradient matching the card's border theme */
+    background: linear-gradient(
+        90deg, 
+        rgba(255, 255, 255, 0.08) 0%, 
+        rgba(255, 255, 255, 0.03) 100%
+    );
 }
 
 /* Card menu */
 
+/* Card menu */
 .card-menu {
     position: absolute;
     top: 10px;
@@ -62,7 +150,10 @@
 
     background: transparent;
     border: none;
-    color: #9ca3af;
+    
+    /* Matches kpi-heading exactly */
+    color: #9ca3af; 
+    opacity: 0.8; 
 
     font-size: 20px;
     line-height: 1;
@@ -70,9 +161,12 @@
 
     padding: 2px 6px;
     border-radius: 6px;
+    transition: all 0.2s ease;
 }
 
 .card-menu:hover {
     background: rgba(255, 255, 255, 0.08);
+    /* Brightens on hover for clear feedback */
     color: #ffffff;
+    opacity: 1;
 }
